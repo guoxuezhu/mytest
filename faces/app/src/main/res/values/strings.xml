@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">faces</string>
+    <string name="save_data">保存数据</string>
+    <string name="not_save_data">不保存数据</string>
 </resources>
