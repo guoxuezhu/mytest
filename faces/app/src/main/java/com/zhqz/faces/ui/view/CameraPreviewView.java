@@ -44,11 +44,11 @@ public class CameraPreviewView extends FrameLayout {
         initViews();
     }
 
-    Paint getFaceRectPaint() {
+    public Paint getFaceRectPaint() {
         return mFaceDrawerView.getFaceRectPaint();
     }
 
-    void setCamera(Camera camera) {
+    public void setCamera(Camera camera) {
         mCamera = camera;
         if (mCamera != null) {
             requestLayout();
@@ -78,7 +78,7 @@ public class CameraPreviewView extends FrameLayout {
         }
     }
 
-    void drawFaces(List<Rect> faceRects, int color) {
+    public void drawFaces(List<Rect> faceRects, int color) {
         try {
             if (mCamera == null || mCamera.getParameters() == null || mCamera.getParameters().getPreviewSize()
                     == null) {
