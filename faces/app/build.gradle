@@ -37,9 +37,10 @@ android {
 
     android.applicationVariants.all { variant ->
         variant.outputs.all {
-            outputFileName = "faces_${defaultConfig.versionName}.apk"
+            outputFileName = "faces-${variant.name}-${variant.versionName}.apk"
         }
     }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -52,12 +53,6 @@ android {
     packagingOptions {
         exclude 'META-INF/services/javax.annotation.processing.Processor'
     }
-
-
-
-
-
-
 }
 
 dependencies {
@@ -67,6 +62,7 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+
 
 
     implementation 'javax.annotation:javax.annotation-api:1.2'
