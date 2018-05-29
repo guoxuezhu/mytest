@@ -22,10 +22,14 @@ import android.widget.Toast;
 import com.sensetime.senseid.facepro.jniwrapper.library.ActiveResult;
 import com.sensetime.senseid.facepro.jniwrapper.library.DetectResult;
 import com.sensetime.senseid.facepro.jniwrapper.library.FaceLibrary;
+import com.zhqz.faces.MvpApplication;
 import com.zhqz.faces.R;
+import com.zhqz.faces.data.DbDao.FacesDataDao;
 import com.zhqz.faces.ui.base.BaseActivity;
 import com.zhqz.faces.ui.view.CameraPreviewView;
 import com.zhqz.faces.utils.ELog;
+import com.zhqz.faces.utils.faceUtil.FaceDBAsyncTask;
+import com.zhqz.faces.utils.faceUtil.ResultListener;
 
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
@@ -39,16 +43,13 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import io.reactivex.Scheduler;
-import io.reactivex.schedulers.Schedulers;
 
-public class MainActivity extends BaseActivity implements MainMvpView {
+public class MainActivity extends BaseActivity implements MainMvpView{
 
     @Inject
     MainPresenter mMainPresenter;
@@ -72,6 +73,7 @@ public class MainActivity extends BaseActivity implements MainMvpView {
     private FaceLibrary mLibrary = null;
     private TrackThread mTrackThread = null;
     private LivenessThread mLivenessThread = null;
+    private FacesDataDao facesDataDao;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,6 +86,10 @@ public class MainActivity extends BaseActivity implements MainMvpView {
         if (Camera.getNumberOfCameras() < 1) {
             txt_tip.setText("未找到相机");
         }
+
+        facesDataDao = MvpApplication.getDaoSession().getFacesDataDao();
+
+
     }
 
     @Override
@@ -120,6 +126,7 @@ public class MainActivity extends BaseActivity implements MainMvpView {
     @Override
     protected void onDestroy() {
         mMainPresenter.detachView();//？
+        System.exit(0);
         super.onDestroy();
     }
 

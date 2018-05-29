@@ -3,6 +3,8 @@ package com.zhqz.faces;
 import android.content.Context;
 import android.support.multidex.MultiDexApplication;
 
+import com.zhqz.faces.data.DbDao.DaoMaster;
+import com.zhqz.faces.data.DbDao.DaoSession;
 import com.zhqz.faces.data.db.SharePreferenceUtil;
 import com.zhqz.faces.injection.component.ApplicationComponent;
 import com.zhqz.faces.injection.component.DaggerApplicationComponent;
@@ -18,6 +20,7 @@ public class MvpApplication extends MultiDexApplication {
 
     public static SharePreferenceUtil prefs;
     public static Context context;
+    public static DaoSession daoSession;
 
     @Override
     public void onCreate() {
@@ -26,6 +29,9 @@ public class MvpApplication extends MultiDexApplication {
         setupComponent();
         prefs = new SharePreferenceUtil(this, "faceSaveDates");
 
+        DaoMaster.DevOpenHelper devOpenHelper = new DaoMaster.DevOpenHelper(getApplicationContext(), "faces.db", null);
+        DaoMaster daoMaster = new DaoMaster(devOpenHelper.getWritableDb());
+        daoSession = daoMaster.newSession();
 
     }
 
@@ -46,5 +52,7 @@ public class MvpApplication extends MultiDexApplication {
         return mApplicationComponent;
     }
 
-
+    public static DaoSession getDaoSession() {
+        return daoSession;
+    }
 }
