@@ -4,9 +4,12 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.widget.ImageView;
 
+import com.sensetime.senseid.facepro.jniwrapper.library.FaceLibrary;
 import com.zhqz.faces.R;
 import com.zhqz.faces.ui.base.BaseActivity;
+import com.zhqz.faces.utils.ELog;
 
 import javax.inject.Inject;
 
@@ -21,7 +24,7 @@ public class FaceCameraActivity extends BaseActivity implements FaceCameraMvpVie
 
     @BindView(R.id.face_camera_surfaceview)
     SurfaceView surfaceView;
-
+    private int faceUserId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +34,7 @@ public class FaceCameraActivity extends BaseActivity implements FaceCameraMvpVie
         activityComponent().inject(this);
         mFaceCameraPresenter.attachView(this);
 
+        faceUserId = getIntent().getIntExtra("faceUserId", 0);
 
         initListener();
     }
@@ -42,10 +46,8 @@ public class FaceCameraActivity extends BaseActivity implements FaceCameraMvpVie
         SurfaceHolder holder = surfaceView.getHolder();
         holder.setFixedSize(1280, 720);
         holder.setKeepScreenOn(true);
-        holder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
         TakePictureSurfaceCallback.number = 100;
         holder.addCallback(new TakePictureSurfaceCallback(this));
-
     }
 
     @OnClick(R.id.image_ok)
@@ -62,6 +64,8 @@ public class FaceCameraActivity extends BaseActivity implements FaceCameraMvpVie
 
     @Override
     public void image(Bitmap bitmap) {
+        ELog.i("==========bitmap===========" + bitmap);
+        mFaceCameraPresenter.detectFace(faceUserId,bitmap);
 
     }
 }

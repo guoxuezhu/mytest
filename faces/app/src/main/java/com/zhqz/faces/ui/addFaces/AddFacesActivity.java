@@ -60,7 +60,9 @@ public class AddFacesActivity extends BaseActivity implements AddFacesMvpView, F
     @Override
     public void onFaceUserItemClicked(FaceUser faceUser) {
         ELog.i("========onFaceUserItemClicked========" + faceUser.toString());
-        startActivity(new Intent(AddFacesActivity.this, FaceCameraActivity.class));
+        Intent intent = new Intent(AddFacesActivity.this, FaceCameraActivity.class);
+        intent.putExtra("faceUserId", faceUser.id);
+        startActivity(intent);
         finish();
     }
 

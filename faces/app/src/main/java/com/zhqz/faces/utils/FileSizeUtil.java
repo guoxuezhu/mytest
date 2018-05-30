@@ -1,11 +1,14 @@
 package com.zhqz.faces.utils;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.os.Environment;
 import android.os.StatFs;
 
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.math.BigDecimal;
 
 
@@ -36,6 +39,44 @@ public class FileSizeUtil {
         }
         return dirName;
     }
+
+    /**
+     * 保存图片对象到指定路径<br>
+     */
+    public static String saveBitmap(Bitmap bitmap) {
+
+        String savePath = Environment.getExternalStorageDirectory() + "/zhqz/FacesImage/";
+        File file = new File(savePath);
+        //不存在创建
+        if (!file.exists()) {
+            file.mkdir();
+        }
+        String f = savePath + "/" + System.currentTimeMillis() +".jpg";
+        FileOutputStream out = null;
+        try {
+            out = new FileOutputStream(f);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
+            out.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        } finally {
+            if (out != null) {
+                try {
+                    out.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return f;
+    }
+
+
+
+
+
+
 
     /**
      * 获取模型路径<br>

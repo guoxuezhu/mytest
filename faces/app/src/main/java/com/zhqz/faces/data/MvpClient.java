@@ -11,7 +11,10 @@ import com.zhqz.faces.data.model.User;
 import com.zhqz.faces.data.remote.MvpService;
 import com.zhqz.faces.exception.ClientRuntimeException;
 
+import java.io.File;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
@@ -24,6 +27,8 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.exceptions.Exceptions;
 import io.reactivex.schedulers.Schedulers;
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
 
 
 @Singleton
@@ -89,5 +94,18 @@ public class MvpClient {
         return mvpService
                 .getfaces(cardNumber, 1)
                 .compose(this.<HttpResult<List<FaceUser>>>applySchedulers());
+    }
+
+    public Observable<HttpResult> updataface(int faceUserId, String path) {
+        File file = new File(path);
+        //组装partMap对象
+        Map<String, RequestBody> partMap = new HashMap<>();
+
+        RequestBody fileBody = RequestBody.create(MediaType.parse("application/octet-stream"), file);
+        partMap.put("files\"; filename=\"" + file.getName() + "", fileBody);
+
+        return mvpService
+                .updataFace(faceUserId,partMap)
+                .compose(this.<HttpResult>applySchedulers());
     }
 }

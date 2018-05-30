@@ -574,11 +574,12 @@ public class MainActivity extends BaseActivity implements MainMvpView, SearchRes
 
         @Override
         public void run() {
+            ELog.i("=====检测到==1111111=====");
             // Check hancle created.
             if (!mIsHandleCreated) {
                 int result = createHandle();
                 if (result != FaceLibrary.ST_OK) {
-                    ELog.i("===create liveness handle fail: " + result + ", " + FaceLibrary.getErrorNameByCode(result));
+                    ELog.i("====检测到==create liveness handle fail: " + result + ", " + FaceLibrary.getErrorNameByCode(result));
                     return;
                 }
                 mIsHandleCreated = true;
@@ -592,7 +593,7 @@ public class MainActivity extends BaseActivity implements MainMvpView, SearchRes
                 synchronized (mImageData) {
                     synchronized (mTrackResult) {
                         // Liveness detect.
-                        Log.d("SenseId", "begin to singlelivenessDetect, at: " + SystemClock.elapsedRealtime());
+                        Log.d("SenseId", "==检测到=begin to singlelivenessDetect, at: " + SystemClock.elapsedRealtime());
                         hacknessScore = mLibrary.singlelivenessDetect(mHandle, mImageData.data, mImageData.format, mImageData.width,
                                 mImageData.height, mImageData.width, mImageData.faceOrientation, mTrackResult.get(0));// 1 is NV21 stride, so pass mImageData.width. Use first detect result.
 //                        if (sw_save_data.isChecked()) {
@@ -600,6 +601,7 @@ public class MainActivity extends BaseActivity implements MainMvpView, SearchRes
 //                        }
                         Log.d("SenseId", "singlelivenessDetect: " + hacknessScore + ", at: " + SystemClock.elapsedRealtime());
                         mTrackResult.clear();
+                        ELog.i("=====检测到==ttttt=====");
                     }
                     mImageData.clear();
                 }

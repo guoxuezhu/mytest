@@ -30,6 +30,7 @@ import okhttp3.HttpUrl;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.RequestBody;
 import okhttp3.logging.HttpLoggingInterceptor;
 import okio.Buffer;
 import retrofit2.Retrofit;
@@ -37,7 +38,9 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.PartMap;
 import retrofit2.http.Query;
 
 
@@ -99,6 +102,14 @@ public interface MvpService {
                                                     @Query("schoolId") int schoolId);
 
 
+    @Headers({
+            SIGNSEAT_HEADER,
+            ACCEPT_HEADER,
+            UA_HEADER
+    })
+    @Multipart
+    @POST("cb/face/detectface")
+    Observable<HttpResult> updataFace(@Query("faceUserId") int faceUserId, @PartMap Map<String, RequestBody> params);
 
 
     /********

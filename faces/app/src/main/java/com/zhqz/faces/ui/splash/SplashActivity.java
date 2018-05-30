@@ -6,7 +6,9 @@ import android.os.Handler;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.zhqz.faces.MvpApplication;
 import com.zhqz.faces.R;
+import com.zhqz.faces.data.DbDao.FacesDataDao;
 import com.zhqz.faces.ui.base.BaseActivity;
 import com.zhqz.faces.ui.main.MainActivity;
 import com.zhqz.faces.utils.ELog;
@@ -24,7 +26,7 @@ import javax.inject.Inject;
 
 import butterknife.ButterKnife;
 
-public class SplashActivity extends BaseActivity implements SplashMvpView, ResultListener, LicenseResultListener {
+public class SplashActivity extends BaseActivity implements SplashMvpView, LicenseResultListener {
 
     @Inject
     SplashPresenter mSplashPresenter;
@@ -46,8 +48,6 @@ public class SplashActivity extends BaseActivity implements SplashMvpView, Resul
         // completes successfully
         PrepareLicenseAyncTask licenseAyncTask = new PrepareLicenseAyncTask(this, this);
         licenseAyncTask.execute();
-
-
 
 
 //        mHandler = new Handler();
@@ -75,17 +75,17 @@ public class SplashActivity extends BaseActivity implements SplashMvpView, Resul
         mSplashPresenter.detachView();//？
         super.onDestroy();
     }
-
-    @Override
-    public void onSuccess(Integer result) {
-        ELog.i("======facesDataDao.loadAll().size()==========" + result);
-        setTiaozhuan();
-    }
-
-    @Override
-    public void onFailed(String errorMessage) {
-        Toast.makeText(this, "出错啦:" + errorMessage, Toast.LENGTH_LONG).show();
-    }
+//
+//    @Override
+//    public void onSuccess(Integer result) {
+//        ELog.i("======facesDataDao.loadAll().size()==========" + result);
+//        setTiaozhuan();
+//    }
+//
+//    @Override
+//    public void onFailed(String errorMessage) {
+//        Toast.makeText(this, "出错啦:" + errorMessage, Toast.LENGTH_LONG).show();
+//    }
 
     @Override
     public void onLicenseInitSuccess() {
@@ -98,16 +98,19 @@ public class SplashActivity extends BaseActivity implements SplashMvpView, Resul
             Toast.makeText(this, "出错啦: init error.", Toast.LENGTH_LONG).show();
             return;
         }
-
-        List<String> imageList = new ArrayList<>();
-        imageList.add("/storage/emulated/0/zhqz/FacesImage/aaa.jpg");
-        imageList.add("/storage/emulated/0/zhqz/FacesImage/bbb.jpg");
-        imageList.add("/storage/emulated/0/zhqz/FacesImage/ccc.jpg");
-
-        if (imageList.size() != 0) {
-            FaceDBAsyncTask task = new FaceDBAsyncTask(this, imageList, this);
-            task.execute();
-        }
+        FacesDataDao facesDataDao = MvpApplication.getDaoSession().getFacesDataDao();
+        ELog.i("=====检测到====facesDataDao===" + facesDataDao.loadAll().toString());
+        setTiaozhuan();
+//
+//        List<String> imageList = new ArrayList<>();
+//        imageList.add("/storage/emulated/0/zhqz/FacesImage/aaa.jpg");
+//        imageList.add("/storage/emulated/0/zhqz/FacesImage/bbb.jpg");
+//        imageList.add("/storage/emulated/0/zhqz/FacesImage/ccc.jpg");
+//
+//        if (imageList.size() != 0) {
+//            FaceDBAsyncTask task = new FaceDBAsyncTask(this, imageList, this);
+//            task.execute();
+//        }
     }
 
     @Override
