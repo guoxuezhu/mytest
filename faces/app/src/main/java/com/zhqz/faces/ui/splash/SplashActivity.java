@@ -79,12 +79,12 @@ public class SplashActivity extends BaseActivity implements SplashMvpView, Resul
     @Override
     public void onSuccess(Integer result) {
         ELog.i("======facesDataDao.loadAll().size()==========" + result);
-
+        setTiaozhuan();
     }
 
     @Override
     public void onFailed(String errorMessage) {
-
+        Toast.makeText(this, "出错啦:" + errorMessage, Toast.LENGTH_LONG).show();
     }
 
     @Override

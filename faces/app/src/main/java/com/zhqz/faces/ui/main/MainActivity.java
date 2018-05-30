@@ -19,17 +19,21 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.sensetime.senseid.facepro.jniwrapper.library.ActiveResult;
 import com.sensetime.senseid.facepro.jniwrapper.library.DetectResult;
 import com.sensetime.senseid.facepro.jniwrapper.library.FaceLibrary;
 import com.zhqz.faces.MvpApplication;
 import com.zhqz.faces.R;
 import com.zhqz.faces.data.DbDao.FacesDataDao;
+import com.zhqz.faces.data.model.SearchResult;
 import com.zhqz.faces.ui.base.BaseActivity;
 import com.zhqz.faces.ui.view.CameraPreviewView;
 import com.zhqz.faces.utils.ELog;
 import com.zhqz.faces.utils.faceUtil.FaceDBAsyncTask;
 import com.zhqz.faces.utils.faceUtil.ResultListener;
+import com.zhqz.faces.utils.faceUtil.SearchFaceAsyncTask;
+import com.zhqz.faces.utils.faceUtil.SearchResultListener;
 
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
@@ -49,7 +53,7 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MainActivity extends BaseActivity implements MainMvpView{
+public class MainActivity extends BaseActivity implements MainMvpView, SearchResultListener {
 
     @Inject
     MainPresenter mMainPresenter;
@@ -59,6 +63,12 @@ public class MainActivity extends BaseActivity implements MainMvpView{
 
     @BindView(R.id.img_result)
     ImageView img_result;
+
+    @BindView(R.id.img_result_ok)
+    ImageView img_result_ok;
+
+    @BindView(R.id.img_result_score)
+    TextView img_result_score;
 
     @BindView(R.id.txt_tip)
     TextView txt_tip;
@@ -74,6 +84,7 @@ public class MainActivity extends BaseActivity implements MainMvpView{
     private TrackThread mTrackThread = null;
     private LivenessThread mLivenessThread = null;
     private FacesDataDao facesDataDao;
+    private Bitmap rotatedRgbBitmap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,7 +99,6 @@ public class MainActivity extends BaseActivity implements MainMvpView{
         }
 
         facesDataDao = MvpApplication.getDaoSession().getFacesDataDao();
-
 
     }
 
@@ -136,6 +146,22 @@ public class MainActivity extends BaseActivity implements MainMvpView{
         }
     }
 
+    @Override
+    public void onSearchResult(String errorMessage, List<SearchResult> result) {
+        ELog.i("==========onSearchResult=====aaaaaaaaaaaaa=========" + result.size());
+        ELog.i("==========onSearchResult=====aaaaaaaaaaaaa=========" + result.toString());
+
+        Glide.with(MainActivity.this).load(result.get(0).mImagePath)
+                .placeholder(R.mipmap.ic_launcher)
+                .error(R.mipmap.ic_launcher)
+                .fitCenter()
+                .dontAnimate()
+                .into(img_result_ok);
+
+        img_result_score.setText("相识度：" + result.get(0).mScore);
+
+    }
+
 
     private class TrackThread extends Thread {
 
@@ -173,11 +199,12 @@ public class MainActivity extends BaseActivity implements MainMvpView{
         public void run() {
             // Check license inited.
             if (!mIsLicenseInited) {
-                int result = initLicense();
-                if (result != FaceLibrary.ST_OK) {
-                    ELog.i("==========init license fail: " + result + ", " + FaceLibrary.getErrorNameByCode(result));
-                    return;
-                }
+                mLibrary = new FaceLibrary();
+//                int result = initLicense();
+//                if (result != FaceLibrary.ST_OK) {
+//                    ELog.i("==========init license fail: " + result + ", " + FaceLibrary.getErrorNameByCode(result));
+//                    return;
+//                }
                 mIsLicenseInited = true;
             }
 
@@ -243,11 +270,12 @@ public class MainActivity extends BaseActivity implements MainMvpView{
             Matrix matrix = new Matrix();
             matrix.preScale(1, -1);
             matrix.postRotate(90);
-            final Bitmap rotatedRgbBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, false);
+            rotatedRgbBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, false);
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
                     img_result.setImageBitmap(rotatedRgbBitmap);
+                    ELog.i("=====检测到==111111111111111111111111111=====" + rotatedRgbBitmap);
                 }
             });
         }
@@ -541,14 +569,12 @@ public class MainActivity extends BaseActivity implements MainMvpView{
                     synchronized (mTrackResult) {
                         // Liveness detect.
                         Log.d("SenseId", "begin to singlelivenessDetect, at: " + SystemClock.elapsedRealtime());
-                        hacknessScore = mLibrary.singlelivenessDetect(mHandle, mImageData.data, mImageData.format, mImageData.width, mImageData.height, mImageData.width, mImageData.faceOrientation, mTrackResult.get(0));// 1 is NV21 stride, so pass mImageData.width. Use first detect result.
-
+                        hacknessScore = mLibrary.singlelivenessDetect(mHandle, mImageData.data, mImageData.format, mImageData.width,
+                                mImageData.height, mImageData.width, mImageData.faceOrientation, mTrackResult.get(0));// 1 is NV21 stride, so pass mImageData.width. Use first detect result.
                         if (sw_save_data.isChecked()) {
                             saveLivenessInputData(hacknessScore, mImageData, mTrackResult.get(0));
                         }
-
-                        Log.d("SenseId", "singlelivenessDetect: " + hacknessScore + ", at: " + SystemClock
-                                .elapsedRealtime());
+                        Log.d("SenseId", "singlelivenessDetect: " + hacknessScore + ", at: " + SystemClock.elapsedRealtime());
                         mTrackResult.clear();
                     }
                     mImageData.clear();
@@ -557,8 +583,14 @@ public class MainActivity extends BaseActivity implements MainMvpView{
                 String resultText = "活体检测失败";
                 if (hacknessScore > 0.0F) {
                     resultText = hacknessScore < THRESHOLD ? "检测到真人" : "检测到 Hack";
+                    if (hacknessScore < THRESHOLD) {
+                        // rotatedRgbBitmap
+                        detectFace(rotatedRgbBitmap);
+
+                    }
+
                 }
-                ELog.i("=====检测到=======" + resultText);
+                ELog.i("=====检测到==22222222222222222222222=====" + resultText);
 
             }
 
@@ -684,6 +716,11 @@ public class MainActivity extends BaseActivity implements MainMvpView{
         }
     }
 
+    private void detectFace(Bitmap rotatedRgbBitmap) {
+        SearchFaceAsyncTask task = new SearchFaceAsyncTask(MainActivity.this, rotatedRgbBitmap, facesDataDao.loadAll(), this);
+        task.execute();
+    }
+
 
     private class ImageData {
 
@@ -692,6 +729,17 @@ public class MainActivity extends BaseActivity implements MainMvpView{
         private int height;
         private int format;
         private int faceOrientation;
+
+        @Override
+        public String toString() {
+            return "ImageData{" +
+                    "data=" + Arrays.toString(data) +
+                    ", width=" + width +
+                    ", height=" + height +
+                    ", format=" + format +
+                    ", faceOrientation=" + faceOrientation +
+                    '}';
+        }
 
         ImageData copy() {
             ImageData copyData = new ImageData();

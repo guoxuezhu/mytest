@@ -102,6 +102,6 @@ dependencies {
     implementation 'com.google.guava:guava:19.0'
 
     //数据库//http://blog.csdn.net/axuanqq/article/details/51344299
-    compile 'org.greenrobot:greendao:3.2.0'
+    implementation 'org.greenrobot:greendao:3.2.0'
 
 }
