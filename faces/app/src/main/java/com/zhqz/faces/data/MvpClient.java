@@ -5,6 +5,7 @@ import android.text.TextUtils;
 
 import com.google.gson.Gson;
 import com.zhqz.faces.MvpApplication;
+import com.zhqz.faces.data.model.FaceUser;
 import com.zhqz.faces.data.model.School;
 import com.zhqz.faces.data.model.User;
 import com.zhqz.faces.data.remote.MvpService;
@@ -84,5 +85,9 @@ public class MvpClient {
                 .compose(this.<HttpResult<List<School>>>applySchedulers());
     }
 
-
+    public Observable<HttpResult<List<FaceUser>>> getfaceUsers(String cardNumber) {
+        return mvpService
+                .getfaces(cardNumber, 1)
+                .compose(this.<HttpResult<List<FaceUser>>>applySchedulers());
+    }
 }

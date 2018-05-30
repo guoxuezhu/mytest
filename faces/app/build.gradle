@@ -69,7 +69,7 @@ android {
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar','*.aar'])
+    implementation fileTree(dir: 'libs', include: ['*.jar', '*.aar'])
     implementation 'com.android.support:appcompat-v7:26.1.0'
     implementation 'com.android.support.constraint:constraint-layout:1.1.0'
     testImplementation 'junit:junit:4.12'
@@ -103,5 +103,7 @@ dependencies {
 
     //数据库//http://blog.csdn.net/axuanqq/article/details/51344299
     implementation 'org.greenrobot:greendao:3.2.0'
+
+    implementation 'com.android.support:recyclerview-v7:26.1.0'
 
 }

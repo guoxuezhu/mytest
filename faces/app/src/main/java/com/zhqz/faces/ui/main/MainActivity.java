@@ -1,5 +1,6 @@
 package com.zhqz.faces.ui.main;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -27,6 +28,7 @@ import com.zhqz.faces.MvpApplication;
 import com.zhqz.faces.R;
 import com.zhqz.faces.data.DbDao.FacesDataDao;
 import com.zhqz.faces.data.model.SearchResult;
+import com.zhqz.faces.ui.addFaces.AddFacesActivity;
 import com.zhqz.faces.ui.base.BaseActivity;
 import com.zhqz.faces.ui.view.CameraPreviewView;
 import com.zhqz.faces.utils.ELog;
@@ -52,6 +54,7 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class MainActivity extends BaseActivity implements MainMvpView, SearchResultListener {
 
@@ -73,8 +76,8 @@ public class MainActivity extends BaseActivity implements MainMvpView, SearchRes
     @BindView(R.id.txt_tip)
     TextView txt_tip;
 
-    @BindView(R.id.sw_save_data)
-    Switch sw_save_data;
+//    @BindView(R.id.sw_save_data)
+//    Switch sw_save_data;
 
     private Camera mCamera = null;
     private static final float THRESHOLD = 0.98F;
@@ -82,7 +85,7 @@ public class MainActivity extends BaseActivity implements MainMvpView, SearchRes
     private static final int FACE_ORIENTATION = FaceLibrary.ST_FACE_LEFT;
     private FaceLibrary mLibrary = null;
     private TrackThread mTrackThread = null;
-    private LivenessThread mLivenessThread = null;
+    private LivenessThread mLivenessThread = new LivenessThread();
     private FacesDataDao facesDataDao;
     private Bitmap rotatedRgbBitmap;
 
@@ -101,6 +104,15 @@ public class MainActivity extends BaseActivity implements MainMvpView, SearchRes
         facesDataDao = MvpApplication.getDaoSession().getFacesDataDao();
 
     }
+
+    @OnClick(R.id.add_img)
+    void add_img() {
+        mLivenessThread.exit();
+        mTrackThread.exit();
+        startActivity(new Intent(MainActivity.this, AddFacesActivity.class));
+        finish();
+    }
+
 
     @Override
     protected void onResume() {
@@ -136,7 +148,6 @@ public class MainActivity extends BaseActivity implements MainMvpView, SearchRes
     @Override
     protected void onDestroy() {
         mMainPresenter.detachView();//？
-        System.exit(0);
         super.onDestroy();
     }
 
@@ -571,9 +582,9 @@ public class MainActivity extends BaseActivity implements MainMvpView, SearchRes
                         Log.d("SenseId", "begin to singlelivenessDetect, at: " + SystemClock.elapsedRealtime());
                         hacknessScore = mLibrary.singlelivenessDetect(mHandle, mImageData.data, mImageData.format, mImageData.width,
                                 mImageData.height, mImageData.width, mImageData.faceOrientation, mTrackResult.get(0));// 1 is NV21 stride, so pass mImageData.width. Use first detect result.
-                        if (sw_save_data.isChecked()) {
-                            saveLivenessInputData(hacknessScore, mImageData, mTrackResult.get(0));
-                        }
+//                        if (sw_save_data.isChecked()) {
+//                            saveLivenessInputData(hacknessScore, mImageData, mTrackResult.get(0));
+//                        }
                         Log.d("SenseId", "singlelivenessDetect: " + hacknessScore + ", at: " + SystemClock.elapsedRealtime());
                         mTrackResult.clear();
                     }

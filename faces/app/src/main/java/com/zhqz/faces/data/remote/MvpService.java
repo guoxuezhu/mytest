@@ -6,6 +6,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.zhqz.faces.BuildConfig;
 import com.zhqz.faces.data.HttpResult;
+import com.zhqz.faces.data.model.FaceUser;
 import com.zhqz.faces.data.model.School;
 import com.zhqz.faces.data.model.User;
 import com.zhqz.faces.utils.Coder;
@@ -36,6 +37,7 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
+import retrofit2.http.POST;
 import retrofit2.http.Query;
 
 
@@ -85,6 +87,17 @@ public interface MvpService {
     })
     @GET("sewage/device/list")
     Observable<HttpResult> getSewageDevice(@Query("schoolId") int schoolId);
+
+    /*班主任获取本班学生录入信息*/
+    @Headers({
+            SIGNSEAT_HEADER,
+            ACCEPT_HEADER,
+            UA_HEADER
+    })
+    @POST("cb/getAllStudent")
+    Observable<HttpResult<List<FaceUser>>> getfaces(@Query("cardNumber") String cardNumber,
+                                                    @Query("schoolId") int schoolId);
+
 
 
 

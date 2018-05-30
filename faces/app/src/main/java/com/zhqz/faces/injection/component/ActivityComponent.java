@@ -3,6 +3,7 @@ package com.zhqz.faces.injection.component;
 
 import com.zhqz.faces.injection.PerActivity;
 import com.zhqz.faces.injection.module.ActivityModule;
+import com.zhqz.faces.ui.addFaces.AddFacesActivity;
 import com.zhqz.faces.ui.main.MainActivity;
 import com.zhqz.faces.ui.splash.SplashActivity;
 
@@ -15,5 +16,7 @@ public interface ActivityComponent {
     void inject(SplashActivity splashActivity);
 
     void inject(MainActivity mainActivity);
+
+    void inject(AddFacesActivity addFacesActivity);
 }
 

@@ -3,4 +3,24 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+
+    <color name="colorgray">#3232</color>
+    <color name="colorwhite">#ffffff</color>
+    <color name="colorBlack">#000000</color>
+    <color name="noticeText">#ffff00</color>
+    <color name="fengexian">#eeeeee</color>
+    <color name="kaoqingText">#323d59</color>
+    <color name="chakanText">#333333</color>
+    <color name="bluebg">#43b4ee</color>
+    <color name="biaobg">#52c0d7</color>
+    <color name="redbg">#ff0000</color>
+    <color name="zuopinbg">#f4f4f4</color>
+    <color name="tianqibg">#09ba36</color>
+    <color name="dibubg">#c0d85e</color>
+    <color name="keqiantishi">#e1591a</color>
+    <color name="kechengbg">#e97640</color>
+    <color name="kaoqinbg">#30ffffff</color>
+    <color name="transparent">#00000000</color>
+    <color name="textColor">#4F4F4F</color>
+    <color name="grayColor">#686969</color>
 </resources>
