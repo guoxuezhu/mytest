@@ -1,5 +1,6 @@
 package com.zhqz.faces.ui.addFaces;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -9,6 +10,8 @@ import com.zhqz.faces.R;
 import com.zhqz.faces.data.model.FaceUser;
 import com.zhqz.faces.ui.adapter.FaceUserAdapter;
 import com.zhqz.faces.ui.base.BaseActivity;
+import com.zhqz.faces.ui.faceCamera.FaceCameraActivity;
+import com.zhqz.faces.ui.main.MainActivity;
 import com.zhqz.faces.utils.ELog;
 
 import java.util.List;
@@ -18,7 +21,7 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class AddFacesActivity extends BaseActivity implements AddFacesMvpView,FaceUserAdapter.CallBack{
+public class AddFacesActivity extends BaseActivity implements AddFacesMvpView, FaceUserAdapter.CallBack {
 
     @Inject
     AddFacesPresenter mAddFacesPresenter;
@@ -57,7 +60,8 @@ public class AddFacesActivity extends BaseActivity implements AddFacesMvpView,Fa
     @Override
     public void onFaceUserItemClicked(FaceUser faceUser) {
         ELog.i("========onFaceUserItemClicked========" + faceUser.toString());
-
+        startActivity(new Intent(AddFacesActivity.this, FaceCameraActivity.class));
+        finish();
     }
 
     @Override

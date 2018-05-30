@@ -148,7 +148,20 @@ public class MainActivity extends BaseActivity implements MainMvpView, SearchRes
     @Override
     protected void onDestroy() {
         mMainPresenter.detachView();//？
+        doStopCamera();
         super.onDestroy();
+    }
+
+    /**
+     * 停止预览，释放Camera
+     */
+    public void doStopCamera() {
+        if (null != mCamera) {
+            mCamera.setPreviewCallback(null);
+            mCamera.stopPreview();
+            mCamera.release();
+            mCamera = null;
+        }
     }
 
     private void clearCameraPreviewCallback() {
