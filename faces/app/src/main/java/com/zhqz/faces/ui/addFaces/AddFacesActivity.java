@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.zhqz.faces.R;
 import com.zhqz.faces.data.model.FaceUser;
@@ -20,6 +21,7 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class AddFacesActivity extends BaseActivity implements AddFacesMvpView, FaceUserAdapter.CallBack {
 
@@ -47,7 +49,6 @@ public class AddFacesActivity extends BaseActivity implements AddFacesMvpView, F
 
         mAddFacesPresenter.getFaces();
 
-
     }
 
 
@@ -58,12 +59,35 @@ public class AddFacesActivity extends BaseActivity implements AddFacesMvpView, F
 
 
     @Override
+    public void showErrorMsg(String errorMsg) {
+        Toast.makeText(this, errorMsg, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
     public void onFaceUserItemClicked(FaceUser faceUser) {
         ELog.i("========onFaceUserItemClicked========" + faceUser.toString());
         Intent intent = new Intent(AddFacesActivity.this, FaceCameraActivity.class);
         intent.putExtra("faceUserId", faceUser.id);
+        intent.putExtra("faceUserName", faceUser.name);
+        intent.putExtra("faceUserSex", faceUser.sex);
         startActivity(intent);
         finish();
+    }
+
+
+    @OnClick(R.id.info_back_img)
+    void info_back_img() {
+        addtiaozhuan();
+    }
+
+    private void addtiaozhuan() {
+        startActivity(new Intent(AddFacesActivity.this, MainActivity.class));
+        finish();
+    }
+
+    @Override
+    public void onBackPressed() {
+        addtiaozhuan();
     }
 
     @Override

@@ -34,14 +34,14 @@ public class SearchFaceAsyncTask extends AsyncTask<Void, Void, ArrayList<SearchR
      * constructor initializes, initialize the image path for searching, the
      * feature list and the listener
      *
-     * @param context   应用上下文<br>
-     *                  the context of application or activity
-     * @param bitmap 待搜索图片路径<br>
-     *                  the path of image for searching
-     * @param features  特征列表<br>
-     *                  the feature list for searching
-     * @param listener  搜索结果监听器<br>
-     *                  the listener for the result of face searching
+     * @param context  应用上下文<br>
+     *                 the context of application or activity
+     * @param bitmap   待搜索图片路径<br>
+     *                 the path of image for searching
+     * @param features 特征列表<br>
+     *                 the feature list for searching
+     * @param listener 搜索结果监听器<br>
+     *                 the listener for the result of face searching
      */
     public SearchFaceAsyncTask(Context context, Bitmap bitmap, List<FacesData> features, SearchResultListener listener) {
         mContext = context;
@@ -49,7 +49,6 @@ public class SearchFaceAsyncTask extends AsyncTask<Void, Void, ArrayList<SearchR
         mFeatureInfoList = features;
         mListener = listener;
     }
-
 
 
     @Override
@@ -92,8 +91,8 @@ public class SearchFaceAsyncTask extends AsyncTask<Void, Void, ArrayList<SearchR
         // the highest scores
         for (int i = 0; i < actualCount; i++) {
             // indexArray is from 1-n, not 0-n-1
-            results.add(new SearchResult(mFeatureInfoList.get(indexArray[i] - 1).mImagePath,
-                    mFeatureInfoList.get(indexArray[i] - 1).mFaceRect, scoreArray[i]));
+            results.add(new SearchResult(scoreArray[i], mFeatureInfoList.get(indexArray[i] - 1).mImagePath,
+                    mFeatureInfoList.get(indexArray[i] - 1).name, mFeatureInfoList.get(indexArray[i] - 1).sex));
         }
         ELog.i("==11====detectResults.size()==111111111111=======" + results.toString());
         ELog.i("===22===detectResults.size()==222222222222=======" + results.size());

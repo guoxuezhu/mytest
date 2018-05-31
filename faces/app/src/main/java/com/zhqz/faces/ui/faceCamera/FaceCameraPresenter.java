@@ -51,7 +51,7 @@ public class FaceCameraPresenter implements Presenter<FaceCameraMvpView> {
     }
 
 
-    public void detectFace(int faceUserId, Bitmap bitmap) {
+    public void detectFace(int faceUserId, String faceUserName, String faceUserSex, Bitmap bitmap) {
         facesDataDao = MvpApplication.getDaoSession().getFacesDataDao();
         if (detectFaceWorker.isDisposed()) {
             detectFaceWorker = Schedulers.io().createWorker();
@@ -68,8 +68,7 @@ public class FaceCameraPresenter implements Presenter<FaceCameraMvpView> {
                         String filePath = FileSizeUtil.saveBitmap(bitmap);
                         if (filePath != null) {
                             for (int j = 0; j < features.size(); j++) {
-                                facesDataDao.insert(new FacesData(filePath, features.get(j).mThumbnailPath, features.get(j).mFeatureIndex,
-                                        features.get(j).mByteFeature, features.get(j).mFaceRect, features.get(j).mFeature));
+                                facesDataDao.insert(new FacesData(faceUserName, faceUserSex, filePath, features.get(j).mFaceRect, features.get(j).mFeature));
 
                                 updataFaceDao(faceUserId, features.get(j).mFaceRect, features.get(j).mFeature, filePath);
                             }
@@ -96,11 +95,17 @@ public class FaceCameraPresenter implements Presenter<FaceCameraMvpView> {
                     @Override
                     public void onNext(HttpResult httpResult) {
                         ELog.i("============更新人脸======onNext=======" + httpResult.toString());
+                        if (httpResult.code.equals("200")) {
+                            fcMvpView.updataFaceOK();
+                        } else {
+                            fcMvpView.updataFaceNO("更新人脸失败，检查原因");
+                        }
                     }
 
                     @Override
                     public void onError(Throwable e) {
                         ELog.i("============更新人脸======onError=======" + e.toString());
+                        fcMvpView.updataFaceNO(e.toString());
                     }
 
                     @Override

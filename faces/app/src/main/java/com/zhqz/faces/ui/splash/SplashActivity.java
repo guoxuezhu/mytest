@@ -13,11 +13,9 @@ import com.zhqz.faces.ui.base.BaseActivity;
 import com.zhqz.faces.ui.main.MainActivity;
 import com.zhqz.faces.utils.ELog;
 import com.zhqz.faces.utils.FileSizeUtil;
-import com.zhqz.faces.utils.faceUtil.FaceDBAsyncTask;
 import com.zhqz.faces.utils.faceUtil.FaceSearchManager;
 import com.zhqz.faces.utils.faceUtil.LicenseResultListener;
 import com.zhqz.faces.utils.faceUtil.PrepareLicenseAyncTask;
-import com.zhqz.faces.utils.faceUtil.ResultListener;
 
 import java.util.ArrayList;
 import java.util.List;

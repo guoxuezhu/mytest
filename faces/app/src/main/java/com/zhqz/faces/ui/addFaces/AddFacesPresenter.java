@@ -55,6 +55,7 @@ public class AddFacesPresenter implements Presenter<AddFacesMvpView> {
                     @Override
                     public void onError(Throwable e) {
                         ELog.i("========getEnterStudent============onError===" + e.toString());
+                        addMvpView.showErrorMsg(e.toString());
                     }
 
                     @Override

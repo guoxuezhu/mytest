@@ -8,4 +8,6 @@ import java.util.List;
 
 public interface AddFacesMvpView extends MvpView {
     void showFaceUsers(List<FaceUser> data);
+
+    void showErrorMsg(String errorMsg);
 }

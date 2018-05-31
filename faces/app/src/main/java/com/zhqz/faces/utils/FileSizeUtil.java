@@ -31,7 +31,7 @@ public class FileSizeUtil {
 
     public static String createFileDao() {
         //创建文件夹 ，在存储卡下
-        String dirName = Environment.getExternalStorageDirectory() + "/zhqz/FacesImage/";
+        String dirName = Environment.getExternalStorageDirectory() + "/zhqz/FacesImage";
         File file = new File(dirName);
         //不存在创建
         if (!file.exists()) {
@@ -45,7 +45,7 @@ public class FileSizeUtil {
      */
     public static String saveBitmap(Bitmap bitmap) {
 
-        String savePath = Environment.getExternalStorageDirectory() + "/zhqz/FacesImage/";
+        String savePath = Environment.getExternalStorageDirectory() + "/zhqz/FacesImage";
         File file = new File(savePath);
         //不存在创建
         if (!file.exists()) {

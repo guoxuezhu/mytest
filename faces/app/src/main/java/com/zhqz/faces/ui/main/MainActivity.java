@@ -32,8 +32,6 @@ import com.zhqz.faces.ui.addFaces.AddFacesActivity;
 import com.zhqz.faces.ui.base.BaseActivity;
 import com.zhqz.faces.ui.view.CameraPreviewView;
 import com.zhqz.faces.utils.ELog;
-import com.zhqz.faces.utils.faceUtil.FaceDBAsyncTask;
-import com.zhqz.faces.utils.faceUtil.ResultListener;
 import com.zhqz.faces.utils.faceUtil.SearchFaceAsyncTask;
 import com.zhqz.faces.utils.faceUtil.SearchResultListener;
 
@@ -70,6 +68,10 @@ public class MainActivity extends BaseActivity implements MainMvpView, SearchRes
     @BindView(R.id.img_result_ok)
     ImageView img_result_ok;
 
+    @BindView(R.id.user_result_name)
+    TextView user_result_name;
+    @BindView(R.id.user_result_sex)
+    TextView user_result_sex;
     @BindView(R.id.img_result_score)
     TextView img_result_score;
 
@@ -102,6 +104,8 @@ public class MainActivity extends BaseActivity implements MainMvpView, SearchRes
         }
 
         facesDataDao = MvpApplication.getDaoSession().getFacesDataDao();
+        ELog.i("==========facesDataDao========" + facesDataDao.loadAll().size());
+        ELog.i("==========facesDataDao========" + facesDataDao.loadAll().toString());
         if (facesDataDao.loadAll().size() == 0) {
             txt_tip.setText("人脸数据为空，请添加");
         }
@@ -153,6 +157,11 @@ public class MainActivity extends BaseActivity implements MainMvpView, SearchRes
         super.onPause();
     }
 
+    @Override
+    public void onBackPressed() {
+        System.exit(0);
+        super.onBackPressed();
+    }
 
     @Override
     protected void onDestroy() {
@@ -191,6 +200,8 @@ public class MainActivity extends BaseActivity implements MainMvpView, SearchRes
                 .dontAnimate()
                 .into(img_result_ok);
 
+        user_result_name.setText("姓名：" + result.get(0).name);
+        user_result_sex.setText("性别：" + result.get(0).sex);
         img_result_score.setText("相识度：" + result.get(0).mScore);
 
     }
@@ -265,12 +276,11 @@ public class MainActivity extends BaseActivity implements MainMvpView, SearchRes
                 List<DetectResult> trackResults;
                 synchronized (mImageData) {
                     // track.
-                    ELog.i("====SenseId======begin to track, at: " + SystemClock.elapsedRealtime());
-                    trackResults = mLibrary.track(mTrackHandle, mImageData.data, mImageData.format, mImageData.width, mImageData.height, mImageData.width, mImageData.faceOrientation);// 1 is NV21 stride, so pass mImageData.width.
-                    ELog.i("==========SenseId====track: " + trackResults + ", at: " + SystemClock.elapsedRealtime());
-
+                    //ELog.i("====SenseId======begin to track, at: " + SystemClock.elapsedRealtime());
+                    trackResults = mLibrary.track(mTrackHandle, mImageData.data, mImageData.format, mImageData.width,
+                            mImageData.height, mImageData.width, mImageData.faceOrientation);// 1 is NV21 stride, so pass mImageData.width.
+                    //ELog.i("==========SenseId====track: " + trackResults + ", at: " + SystemClock.elapsedRealtime());
                     processTrackResult(mImageData, trackResults);
-
                     mImageData.clear();
                 }
 
@@ -375,7 +385,7 @@ public class MainActivity extends BaseActivity implements MainMvpView, SearchRes
             mResultCache = null;
             mCurrentCacheCount = 0;
             mLibrary.resetLivenessSelector(mSelectorHandle);
-            Log.d("SenseId", "reset frame select");
+            // Log.d("SenseId", "reset frame select");
         }
 
         private List<Rect> fixFaceRectsForScreen(List<Rect> faceRects) {

@@ -19,7 +19,14 @@
             android:textColor="@color/colorwhite"
             android:textSize="28sp" />
 
-
+        <ImageView
+            android:id="@+id/back_img"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="20dp"
+            android:src="@mipmap/ic_launcher" />
     </RelativeLayout>
 
     <FrameLayout
@@ -30,7 +37,6 @@
             android:id="@+id/face_camera_surfaceview"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
-
 
 
         <LinearLayout

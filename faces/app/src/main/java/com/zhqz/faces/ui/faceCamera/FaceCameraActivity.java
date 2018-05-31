@@ -1,13 +1,16 @@
 package com.zhqz.faces.ui.faceCamera;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.sensetime.senseid.facepro.jniwrapper.library.FaceLibrary;
 import com.zhqz.faces.R;
+import com.zhqz.faces.ui.addFaces.AddFacesActivity;
 import com.zhqz.faces.ui.base.BaseActivity;
 import com.zhqz.faces.utils.ELog;
 
@@ -25,6 +28,8 @@ public class FaceCameraActivity extends BaseActivity implements FaceCameraMvpVie
     @BindView(R.id.face_camera_surfaceview)
     SurfaceView surfaceView;
     private int faceUserId;
+    private String faceUserName;
+    private String faceUserSex;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +40,8 @@ public class FaceCameraActivity extends BaseActivity implements FaceCameraMvpVie
         mFaceCameraPresenter.attachView(this);
 
         faceUserId = getIntent().getIntExtra("faceUserId", 0);
-
+        faceUserName = getIntent().getStringExtra("faceUserName");
+        faceUserSex = getIntent().getStringExtra("faceUserSex");
         initListener();
     }
 
@@ -55,6 +61,20 @@ public class FaceCameraActivity extends BaseActivity implements FaceCameraMvpVie
         TakePictureSurfaceCallback.number = 9;
     }
 
+    @OnClick(R.id.back_img)
+    void back_img() {
+        tiaozhuanfinish();
+    }
+
+    private void tiaozhuanfinish() {
+        startActivity(new Intent(FaceCameraActivity.this, AddFacesActivity.class));
+        finish();
+    }
+
+    @Override
+    public void onBackPressed() {
+        tiaozhuanfinish();
+    }
 
     @Override
     protected void onDestroy() {
@@ -65,7 +85,16 @@ public class FaceCameraActivity extends BaseActivity implements FaceCameraMvpVie
     @Override
     public void image(Bitmap bitmap) {
         ELog.i("==========bitmap===========" + bitmap);
-        mFaceCameraPresenter.detectFace(faceUserId,bitmap);
+        mFaceCameraPresenter.detectFace(faceUserId, faceUserName, faceUserSex, bitmap);
+    }
 
+    @Override
+    public void updataFaceOK() {
+        tiaozhuanfinish();
+    }
+
+    @Override
+    public void updataFaceNO(String errorMsg) {
+        Toast.makeText(this, errorMsg, Toast.LENGTH_LONG).show();
     }
 }
