@@ -15,6 +15,7 @@ import android.os.Environment;
 import android.os.SystemClock;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -330,6 +331,12 @@ public class MainActivity extends BaseActivity implements MainMvpView, SearchRes
 
         private void drawFaceRectOnPreview(List<DetectResult> trackResults) {
             if (trackResults == null || trackResults.isEmpty()) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        preview.faceGONE();
+                    }
+                });
                 return;
             }
             final List<Rect> rgbFaceRects = new ArrayList<>();

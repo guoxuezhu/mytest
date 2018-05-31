@@ -1,6 +1,7 @@
 package com.zhqz.faces.ui.view;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Rect;
@@ -10,6 +11,8 @@ import android.util.AttributeSet;
 import android.view.TextureView;
 import android.widget.FrameLayout;
 import android.widget.Toast;
+
+import com.zhqz.faces.utils.ELog;
 
 import java.io.IOException;
 import java.util.List;
@@ -80,17 +83,28 @@ public class CameraPreviewView extends FrameLayout {
 
     public void drawFaces(List<Rect> faceRects, int color) {
         try {
-            if (mCamera == null || mCamera.getParameters() == null || mCamera.getParameters().getPreviewSize()
-                    == null) {
+            if (mCamera == null || mCamera.getParameters() == null || mCamera.getParameters().getPreviewSize() == null) {
                 return;
             }
-
             mFaceDrawerView.drawFaces(faceRects, mCamera.getParameters().getPreviewSize().height, mCamera
                     .getParameters().getPreviewSize().width, color);
         } catch (RuntimeException e) {
             e.printStackTrace();
             // error when camera interrupted.
         }
+    }
+
+    public void faceGONE() {
+        try {
+            if (mCamera == null || mCamera.getParameters() == null || mCamera.getParameters().getPreviewSize() == null) {
+                return;
+            }
+            mFaceDrawerView.drawNull();
+        } catch (Exception e) {
+            e.printStackTrace();
+            // error when camera interrupted.
+        }
+
     }
 
     @Override
@@ -106,7 +120,6 @@ public class CameraPreviewView extends FrameLayout {
     private void initViews() {
         final TextureView textureView = new TextureView(getContext());
         addView(textureView);
-
         mFaceDrawerView = new FaceDrawerView(getContext());
         addView(mFaceDrawerView);
 
@@ -162,4 +175,6 @@ public class CameraPreviewView extends FrameLayout {
             }
         });
     }
+
+
 }
