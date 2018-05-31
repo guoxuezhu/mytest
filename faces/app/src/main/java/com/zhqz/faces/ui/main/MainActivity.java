@@ -85,7 +85,7 @@ public class MainActivity extends BaseActivity implements MainMvpView, SearchRes
     private static final int FACE_ORIENTATION = FaceLibrary.ST_FACE_LEFT;
     private FaceLibrary mLibrary = null;
     private TrackThread mTrackThread = null;
-    private LivenessThread mLivenessThread = new LivenessThread();
+    private LivenessThread mLivenessThread = null;
     private FacesDataDao facesDataDao;
     private Bitmap rotatedRgbBitmap;
 
@@ -107,8 +107,12 @@ public class MainActivity extends BaseActivity implements MainMvpView, SearchRes
 
     @OnClick(R.id.add_img)
     void add_img() {
-        mLivenessThread.exit();
-        mTrackThread.exit();
+        if (mLivenessThread != null) {
+            mLivenessThread.exit();
+        }
+        if (mTrackThread != null) {
+            mTrackThread.exit();
+        }
         startActivity(new Intent(MainActivity.this, AddFacesActivity.class));
         finish();
     }
@@ -139,7 +143,9 @@ public class MainActivity extends BaseActivity implements MainMvpView, SearchRes
     protected void onPause() {
         clearCameraPreviewCallback();
 
-        mTrackThread.exit();
+        if (mTrackThread != null) {
+            mTrackThread.exit();
+        }
 
         super.onPause();
     }
@@ -279,8 +285,9 @@ public class MainActivity extends BaseActivity implements MainMvpView, SearchRes
                     clearImageCaches();
                 }
             }
-
-            mLivenessThread.exit();
+            if (mLivenessThread != null) {
+                mLivenessThread.exit();
+            }
             destoryTrackHandle();
             destorySelectorHandle();
         }
