@@ -67,10 +67,11 @@ public class FaceCameraPresenter implements Presenter<FaceCameraMvpView> {
                     } else {
                         String filePath = FileSizeUtil.saveBitmap(bitmap);
                         if (filePath != null) {
-                            updataFaceDao(faceUserId, filePath);
                             for (int j = 0; j < features.size(); j++) {
                                 facesDataDao.insert(new FacesData(filePath, features.get(j).mThumbnailPath, features.get(j).mFeatureIndex,
                                         features.get(j).mByteFeature, features.get(j).mFaceRect, features.get(j).mFeature));
+
+                                updataFaceDao(faceUserId, features.get(j).mFaceRect, features.get(j).mFeature, filePath);
                             }
                             ELog.i("=====检测人脸==facesDataDao====" + facesDataDao.loadAll().toString());
                             ELog.i("=====检测人脸==facesDataDao====" + facesDataDao.loadAll().size());
@@ -84,8 +85,8 @@ public class FaceCameraPresenter implements Presenter<FaceCameraMvpView> {
         }, 1, TimeUnit.MILLISECONDS);
     }
 
-    private void updataFaceDao(int faceUserId, String filePath) {
-        mvpClient.updataface(faceUserId, filePath)
+    private void updataFaceDao(int faceUserId, String mFaceRect, String mFeature, String filePath) {
+        mvpClient.updataface(faceUserId, mFaceRect, mFeature, filePath)
                 .subscribe(new Observer<HttpResult>() {
                     @Override
                     public void onSubscribe(Disposable d) {

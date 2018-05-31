@@ -16,9 +16,24 @@ public class FaceUser {
     @SerializedName("sex")// 男
     public String sex;
 
-    @SerializedName("faceInfo")// 学号/教职工号
+    @SerializedName("faceInfo")
     public String faceInfo;
 
+    @SerializedName("mFaceRect")//人脸框字符串
+    public String mFaceRect;
 
+    @SerializedName("mFeature")//字节数组格式的特征
+    public String mFeature;
 
+    @Override
+    public String toString() {
+        return "FaceUser{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", sex='" + sex + '\'' +
+                ", faceInfo='" + faceInfo + '\'' +
+                ", mFaceRect='" + mFaceRect + '\'' +
+                ", mFeature='" + mFeature + '\'' +
+                '}';
+    }
 }

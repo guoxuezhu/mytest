@@ -107,8 +107,11 @@ public interface MvpService {
             UA_HEADER
     })
     @Multipart
-    @POST("cb/face/detectface")
-    Observable<HttpResult> updataFace(@Query("faceUserId") int faceUserId, @PartMap Map<String, RequestBody> params);
+    @POST("user/uploadImageInfo")
+    Observable<HttpResult> updataFace(@Query("id") int id,
+                                      @Query("mFaceRect") String mFaceRect,
+                                      @Query("mFeature") String mFeature,
+                                      @PartMap Map<String, RequestBody> params);
 
 
     /********

@@ -1,6 +1,7 @@
 package com.zhqz.faces.ui.adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -43,8 +44,14 @@ public class FaceUserAdapter extends RecyclerView.Adapter<FaceUserAdapter.ViewHo
     public void onBindViewHolder(ViewHolder holder, int position) {
         FaceUser faceUser = faceUsers.get(position);
         holder.face_name.setText(faceUser.name);
-        holder.face_number.setText(faceUser.number);
-        holder.face_status.setText(faceUser.status + "");
+        holder.face_number.setText(faceUser.sex);
+        if (faceUser.mFeature != null) {
+            holder.face_status.setText("已录入");
+            holder.face_status.setTextColor(Color.parseColor("#43b4ee"));
+        } else {
+            holder.face_status.setText("未录入");
+            holder.face_status.setTextColor(Color.parseColor("#ff0000"));
+        }
 
         holder.setItem(faceUser);
     }

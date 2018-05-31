@@ -96,7 +96,7 @@ public class MvpClient {
                 .compose(this.<HttpResult<List<FaceUser>>>applySchedulers());
     }
 
-    public Observable<HttpResult> updataface(int faceUserId, String path) {
+    public Observable<HttpResult> updataface(int faceUserId, String mFaceRect, String mFeature, String path) {
         File file = new File(path);
         //组装partMap对象
         Map<String, RequestBody> partMap = new HashMap<>();
@@ -105,7 +105,7 @@ public class MvpClient {
         partMap.put("files\"; filename=\"" + file.getName() + "", fileBody);
 
         return mvpService
-                .updataFace(faceUserId,partMap)
+                .updataFace(faceUserId, mFaceRect, mFeature, partMap)
                 .compose(this.<HttpResult>applySchedulers());
     }
 }

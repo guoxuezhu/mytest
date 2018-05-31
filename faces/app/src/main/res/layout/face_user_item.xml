@@ -23,7 +23,7 @@
             android:layout_weight="1"
             android:gravity="center"
             android:textColor="@color/kaoqingText"
-            android:textSize="10sp" />
+            android:textSize="14sp" />
 
         <View
             android:layout_width="1dp"
@@ -37,7 +37,7 @@
             android:layout_weight="1"
             android:gravity="center"
             android:textColor="@color/kaoqingText"
-            android:textSize="10sp" />
+            android:textSize="14sp" />
 
         <View
             android:layout_width="1dp"
@@ -51,7 +51,7 @@
             android:layout_weight="1"
             android:gravity="center"
             android:textColor="@color/kaoqingText"
-            android:textSize="10sp" />
+            android:textSize="14sp" />
 
 
         <View
