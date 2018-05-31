@@ -45,7 +45,7 @@ public class AddFacesActivity extends BaseActivity implements AddFacesMvpView, F
         faceUserAdapter = new FaceUserAdapter(this, null, this);
         face_recyclerView.setAdapter(faceUserAdapter);
 
-        mAddFacesPresenter.getFaces("0372956048");
+        mAddFacesPresenter.getFaces();
 
 
     }

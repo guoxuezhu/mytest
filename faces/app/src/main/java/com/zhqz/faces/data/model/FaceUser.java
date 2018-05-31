@@ -13,19 +13,12 @@ public class FaceUser {
     @SerializedName("name")
     public String name;
 
-    @SerializedName("number")// 学号/教职工号
-    public String number;
+    @SerializedName("sex")// 男
+    public String sex;
 
-    @SerializedName("status")// 状态
-    public int status;// 0 未录入 1已录入
+    @SerializedName("faceInfo")// 学号/教职工号
+    public String faceInfo;
 
-    @Override
-    public String toString() {
-        return "FaceUser{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", number='" + number + '\'' +
-                ", status=" + status +
-                '}';
-    }
+
+
 }

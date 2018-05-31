@@ -52,7 +52,7 @@ public interface MvpService {
      * smart.rovemaker.com  //https
      * 192.168.10.105
      */
-    final String URLIP = "192.168.31.180";
+    final String URLIP = "192.168.31.39:8089";
     final String ENDPOINT = "http://" + URLIP + "/api/";
 
     final String TIME_STAMP_HEADER = "timestamp";
@@ -97,9 +97,8 @@ public interface MvpService {
             ACCEPT_HEADER,
             UA_HEADER
     })
-    @POST("cb/getAllStudent")
-    Observable<HttpResult<List<FaceUser>>> getfaces(@Query("cardNumber") String cardNumber,
-                                                    @Query("schoolId") int schoolId);
+    @GET("user/all")
+    Observable<HttpResult<List<FaceUser>>> getfaces();
 
 
     @Headers({

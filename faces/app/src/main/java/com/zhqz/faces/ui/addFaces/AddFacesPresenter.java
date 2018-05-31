@@ -36,8 +36,8 @@ public class AddFacesPresenter implements Presenter<AddFacesMvpView> {
         addMvpView = null;
     }
 
-    void getFaces(String cardNumber) {
-        mvpClient.getfaceUsers(cardNumber)
+    void getFaces() {
+        mvpClient.getfaceUsers()
                 .subscribe(new Observer<HttpResult<List<FaceUser>>>() {
                     @Override
                     public void onSubscribe(Disposable d) {

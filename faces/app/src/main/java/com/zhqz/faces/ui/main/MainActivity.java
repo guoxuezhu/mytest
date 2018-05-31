@@ -102,6 +102,9 @@ public class MainActivity extends BaseActivity implements MainMvpView, SearchRes
         }
 
         facesDataDao = MvpApplication.getDaoSession().getFacesDataDao();
+        if (facesDataDao.loadAll().size() == 0) {
+            txt_tip.setText("人脸数据为空，请添加");
+        }
 
     }
 
@@ -623,7 +626,14 @@ public class MainActivity extends BaseActivity implements MainMvpView, SearchRes
                     }
 
                 }
-                ELog.i("=====检测到==22222222222222222222222=====" + resultText);
+                final String finalresult = resultText;
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        txt_tip.setText(finalresult);
+                        ELog.i("=====检测到==22222222222222222222222=====" + finalresult);
+                    }
+                });
 
             }
 
@@ -750,8 +760,11 @@ public class MainActivity extends BaseActivity implements MainMvpView, SearchRes
     }
 
     private void detectFace(Bitmap rotatedRgbBitmap) {
-        SearchFaceAsyncTask task = new SearchFaceAsyncTask(MainActivity.this, rotatedRgbBitmap, facesDataDao.loadAll(), this);
-        task.execute();
+        if (facesDataDao.loadAll().size() != 0) {
+            SearchFaceAsyncTask task = new SearchFaceAsyncTask(MainActivity.this, rotatedRgbBitmap, facesDataDao.loadAll(), this);
+            task.execute();
+        }
+
     }
 
 

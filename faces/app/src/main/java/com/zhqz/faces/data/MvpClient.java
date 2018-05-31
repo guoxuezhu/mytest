@@ -90,9 +90,9 @@ public class MvpClient {
                 .compose(this.<HttpResult<List<School>>>applySchedulers());
     }
 
-    public Observable<HttpResult<List<FaceUser>>> getfaceUsers(String cardNumber) {
+    public Observable<HttpResult<List<FaceUser>>> getfaceUsers() {
         return mvpService
-                .getfaces(cardNumber, 1)
+                .getfaces()
                 .compose(this.<HttpResult<List<FaceUser>>>applySchedulers());
     }
 
