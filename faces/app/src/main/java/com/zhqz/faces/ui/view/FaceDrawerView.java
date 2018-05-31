@@ -59,6 +59,8 @@ public class FaceDrawerView extends View {
             return;
         }
 
+        canvas.scale(-1, 1, getWidth()/2, getHeight()/2);
+
         for (Rect rect : mFaceRects) {
             Rect faceRectOnView = getViewFaceRect(rect, mImageWidth, mImageHeight, getMeasuredWidth(),
                     getMeasuredHeight());

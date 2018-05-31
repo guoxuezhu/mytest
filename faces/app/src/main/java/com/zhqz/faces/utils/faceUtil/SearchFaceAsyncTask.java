@@ -86,6 +86,9 @@ public class SearchFaceAsyncTask extends AsyncTask<Void, Void, ArrayList<SearchR
             e.printStackTrace();
             mErrorMessage = e.getLocalizedMessage();
         }
+        if (actualCount == 0) {
+            mErrorMessage = "未检测到相识人脸";
+        }
         // 处理搜索结果，最多返回三个分数最高的特征相关信息
         // process the result, at most return three features information with
         // the highest scores

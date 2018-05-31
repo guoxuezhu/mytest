@@ -124,7 +124,7 @@ public class CameraPreviewView extends FrameLayout {
                     Toast.makeText(getContext(), "打开相机失败", Toast.LENGTH_SHORT).show();
                 }
                 Matrix mirrorMatrix = new Matrix();
-                mirrorMatrix.setScale(-1, 1, getWidth() / 2, 0);
+                //mirrorMatrix.setScale(-1, 1, getWidth() / 2, 0);  //镜像
                 textureView.setTransform(mirrorMatrix);
 
                 float scaleX;
