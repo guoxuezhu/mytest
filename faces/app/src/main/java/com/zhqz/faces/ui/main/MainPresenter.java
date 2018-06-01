@@ -1,7 +1,9 @@
 package com.zhqz.faces.ui.main;
 
+import com.zhqz.faces.data.HttpResult;
 import com.zhqz.faces.data.MvpClient;
 import com.zhqz.faces.data.model.School;
+import com.zhqz.faces.data.model.SearchResult;
 import com.zhqz.faces.exception.ClientRuntimeException;
 import com.zhqz.faces.ui.base.Presenter;
 import com.zhqz.faces.utils.ELog;
@@ -71,4 +73,29 @@ public class MainPresenter implements Presenter<MainMvpView> {
                 });
     }
 
+    public void kaoqing(long id) {
+        mvpClient.setkaoqin(id)
+                .subscribe(new Observer<HttpResult>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(HttpResult httpResult) {
+                        ELog.i("============考勤======onNext=======" + httpResult.toString());
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        ELog.i("============考勤======onError=======" + e.toString());
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+
+    }
 }

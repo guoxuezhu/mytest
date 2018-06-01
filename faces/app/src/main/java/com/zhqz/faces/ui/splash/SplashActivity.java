@@ -79,7 +79,8 @@ public class SplashActivity extends BaseActivity implements SplashMvpView, Licen
         // 初始化人脸搜索
         // initialize for face searching
         try {
-            FaceSearchManager.getInstance().init(this, FileSizeUtil.getModelPath(this, "M_Verify_MIMICG2_Common_3.17.0_v1.model"));
+            FaceSearchManager.getInstance().init(this,
+                    FileSizeUtil.getModelPath(this, "M_Verify_MIMICG2_Common_3.17.0_v1.model"));
         } catch (Exception e) {
             e.printStackTrace();
             Toast.makeText(this, "出错啦: init error.", Toast.LENGTH_LONG).show();

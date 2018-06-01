@@ -2,14 +2,17 @@ package com.zhqz.faces.data;
 
 
 import android.text.TextUtils;
+import android.text.format.DateUtils;
 
 import com.google.gson.Gson;
 import com.zhqz.faces.MvpApplication;
 import com.zhqz.faces.data.model.FaceUser;
 import com.zhqz.faces.data.model.School;
+import com.zhqz.faces.data.model.SearchResult;
 import com.zhqz.faces.data.model.User;
 import com.zhqz.faces.data.remote.MvpService;
 import com.zhqz.faces.exception.ClientRuntimeException;
+import com.zhqz.faces.utils.DateUtil;
 
 import java.io.File;
 import java.util.HashMap;
@@ -106,6 +109,12 @@ public class MvpClient {
 
         return mvpService
                 .updataFace(faceUserId, mFaceRect, mFeature, partMap)
+                .compose(this.<HttpResult>applySchedulers());
+    }
+
+
+    public Observable<HttpResult> setkaoqin(long userId) {
+        return mvpService.kaoqin((int) userId, DateUtil.getTimeyyyyMMdd(), DateUtil.getTimeHHmm())
                 .compose(this.<HttpResult>applySchedulers());
     }
 }

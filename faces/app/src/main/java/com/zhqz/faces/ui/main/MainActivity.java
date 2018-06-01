@@ -17,7 +17,6 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -194,20 +193,22 @@ public class MainActivity extends BaseActivity implements MainMvpView, SearchRes
         ELog.i("==========onSearchResult=====aaaaaaaaaaaaa=========" + result.size());
         ELog.i("==========onSearchResult=====aaaaaaaaaaaaa=========" + result.toString());
 
-
         if (result.size() == 0) {
             Toast.makeText(this, errorMessage, Toast.LENGTH_LONG).show();
         } else {
-            Glide.with(MainActivity.this).load(result.get(0).mImagePath)
-                    .placeholder(R.mipmap.ic_launcher)
-                    .error(R.mipmap.ic_launcher)
-                    .fitCenter()
-                    .dontAnimate()
-                    .into(img_result_ok);
+            if (result.get(0).mScore > 0.9) {
+                Glide.with(MainActivity.this).load(result.get(0).mImagePath)
+                        .placeholder(R.mipmap.ic_launcher)
+                        .error(R.mipmap.ic_launcher)
+                        .centerCrop()
+                        .dontAnimate()
+                        .into(img_result_ok);
 
-            user_result_name.setText("姓名：" + result.get(0).name);
-            user_result_sex.setText("性别：" + result.get(0).sex);
-            img_result_score.setText("相识度：" + result.get(0).mScore);
+                user_result_name.setText("姓名：" + result.get(0).name);
+                user_result_sex.setText("性别：" + result.get(0).sex);
+                img_result_score.setText("相识度：" + result.get(0).mScore);
+                mMainPresenter.kaoqing(result.get(0).id);
+            }
         }
     }
 

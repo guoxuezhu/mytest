@@ -114,6 +114,15 @@ public interface MvpService {
                                       @PartMap Map<String, RequestBody> params);
 
 
+    @Headers({
+            SIGNSEAT_HEADER,
+            ACCEPT_HEADER,
+            UA_HEADER
+    })
+    @POST("attendance/add")
+    Observable<HttpResult> kaoqin(@Query("userId") int userId, @Query("data") String data, @Query("time") String time);
+
+
     /********
      * Factory class that sets up a new ribot services
      *******/

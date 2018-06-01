@@ -94,7 +94,7 @@ public class SearchFaceAsyncTask extends AsyncTask<Void, Void, ArrayList<SearchR
         // the highest scores
         for (int i = 0; i < actualCount; i++) {
             // indexArray is from 1-n, not 0-n-1
-            results.add(new SearchResult(scoreArray[i], mFeatureInfoList.get(indexArray[i] - 1).mImagePath,
+            results.add(new SearchResult(mFeatureInfoList.get(indexArray[i] - 1).id,scoreArray[i], mFeatureInfoList.get(indexArray[i] - 1).mImagePath,
                     mFeatureInfoList.get(indexArray[i] - 1).name, mFeatureInfoList.get(indexArray[i] - 1).sex));
         }
         ELog.i("==11====detectResults.size()==111111111111=======" + results.toString());

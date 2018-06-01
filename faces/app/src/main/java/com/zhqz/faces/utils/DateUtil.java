@@ -48,6 +48,10 @@ public class DateUtil {
         return getNow("HH:mm:ss");
     }
 
+    public static String getTimeHHmm() {
+        return getNow("HH:mm");
+    }
+
     public static String getTimeyyyyMMdd() {
         return getNow("yyyy-MM-dd");
     }
