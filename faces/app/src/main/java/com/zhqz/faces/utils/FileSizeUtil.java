@@ -101,8 +101,7 @@ public class FileSizeUtil {
     }
 
     public static void deletefile(String fileName) {
-        String dirName = Environment.getExternalStorageDirectory() + "/班牌作品/";
-        File file = new File(dirName + fileName);
+        File file = new File(fileName);
         deleteFile(file);
     }
 

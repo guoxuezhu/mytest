@@ -73,17 +73,6 @@ public class SplashActivity extends BaseActivity implements SplashMvpView, Licen
         mSplashPresenter.detachView();//？
         super.onDestroy();
     }
-//
-//    @Override
-//    public void onSuccess(Integer result) {
-//        ELog.i("======facesDataDao.loadAll().size()==========" + result);
-//        setTiaozhuan();
-//    }
-//
-//    @Override
-//    public void onFailed(String errorMessage) {
-//        Toast.makeText(this, "出错啦:" + errorMessage, Toast.LENGTH_LONG).show();
-//    }
 
     @Override
     public void onLicenseInitSuccess() {
@@ -96,19 +85,7 @@ public class SplashActivity extends BaseActivity implements SplashMvpView, Licen
             Toast.makeText(this, "出错啦: init error.", Toast.LENGTH_LONG).show();
             return;
         }
-        FacesDataDao facesDataDao = MvpApplication.getDaoSession().getFacesDataDao();
-        ELog.i("=====检测到====facesDataDao===" + facesDataDao.loadAll().toString());
         setTiaozhuan();
-//
-//        List<String> imageList = new ArrayList<>();
-//        imageList.add("/storage/emulated/0/zhqz/FacesImage/aaa.jpg");
-//        imageList.add("/storage/emulated/0/zhqz/FacesImage/bbb.jpg");
-//        imageList.add("/storage/emulated/0/zhqz/FacesImage/ccc.jpg");
-//
-//        if (imageList.size() != 0) {
-//            FaceDBAsyncTask task = new FaceDBAsyncTask(this, imageList, this);
-//            task.execute();
-//        }
     }
 
     @Override

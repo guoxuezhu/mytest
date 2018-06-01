@@ -15,7 +15,7 @@ import com.zhqz.faces.data.model.FacesData;
 /** 
  * DAO for table "FACES_DATA".
 */
-public class FacesDataDao extends AbstractDao<FacesData, Void> {
+public class FacesDataDao extends AbstractDao<FacesData, Long> {
 
     public static final String TABLENAME = "FACES_DATA";
 
@@ -24,11 +24,12 @@ public class FacesDataDao extends AbstractDao<FacesData, Void> {
      * Can be used for QueryBuilder and for referencing column names.
      */
     public static class Properties {
-        public final static Property Name = new Property(0, String.class, "name", false, "NAME");
-        public final static Property Sex = new Property(1, String.class, "sex", false, "SEX");
-        public final static Property MImagePath = new Property(2, String.class, "mImagePath", false, "M_IMAGE_PATH");
-        public final static Property MFaceRect = new Property(3, String.class, "mFaceRect", false, "M_FACE_RECT");
-        public final static Property MFeature = new Property(4, String.class, "mFeature", false, "M_FEATURE");
+        public final static Property Id = new Property(0, long.class, "id", true, "_id");
+        public final static Property Name = new Property(1, String.class, "name", false, "NAME");
+        public final static Property Sex = new Property(2, String.class, "sex", false, "SEX");
+        public final static Property MImagePath = new Property(3, String.class, "mImagePath", false, "M_IMAGE_PATH");
+        public final static Property MFaceRect = new Property(4, String.class, "mFaceRect", false, "M_FACE_RECT");
+        public final static Property MFeature = new Property(5, String.class, "mFeature", false, "M_FEATURE");
     }
 
 
@@ -44,11 +45,12 @@ public class FacesDataDao extends AbstractDao<FacesData, Void> {
     public static void createTable(Database db, boolean ifNotExists) {
         String constraint = ifNotExists? "IF NOT EXISTS ": "";
         db.execSQL("CREATE TABLE " + constraint + "\"FACES_DATA\" (" + //
-                "\"NAME\" TEXT," + // 0: name
-                "\"SEX\" TEXT," + // 1: sex
-                "\"M_IMAGE_PATH\" TEXT," + // 2: mImagePath
-                "\"M_FACE_RECT\" TEXT," + // 3: mFaceRect
-                "\"M_FEATURE\" TEXT);"); // 4: mFeature
+                "\"_id\" INTEGER PRIMARY KEY NOT NULL ," + // 0: id
+                "\"NAME\" TEXT," + // 1: name
+                "\"SEX\" TEXT," + // 2: sex
+                "\"M_IMAGE_PATH\" TEXT," + // 3: mImagePath
+                "\"M_FACE_RECT\" TEXT," + // 4: mFaceRect
+                "\"M_FEATURE\" TEXT);"); // 5: mFeature
     }
 
     /** Drops the underlying database table. */
@@ -60,104 +62,111 @@ public class FacesDataDao extends AbstractDao<FacesData, Void> {
     @Override
     protected final void bindValues(DatabaseStatement stmt, FacesData entity) {
         stmt.clearBindings();
+        stmt.bindLong(1, entity.getId());
  
         String name = entity.getName();
         if (name != null) {
-            stmt.bindString(1, name);
+            stmt.bindString(2, name);
         }
  
         String sex = entity.getSex();
         if (sex != null) {
-            stmt.bindString(2, sex);
+            stmt.bindString(3, sex);
         }
  
         String mImagePath = entity.getMImagePath();
         if (mImagePath != null) {
-            stmt.bindString(3, mImagePath);
+            stmt.bindString(4, mImagePath);
         }
  
         String mFaceRect = entity.getMFaceRect();
         if (mFaceRect != null) {
-            stmt.bindString(4, mFaceRect);
+            stmt.bindString(5, mFaceRect);
         }
  
         String mFeature = entity.getMFeature();
         if (mFeature != null) {
-            stmt.bindString(5, mFeature);
+            stmt.bindString(6, mFeature);
         }
     }
 
     @Override
     protected final void bindValues(SQLiteStatement stmt, FacesData entity) {
         stmt.clearBindings();
+        stmt.bindLong(1, entity.getId());
  
         String name = entity.getName();
         if (name != null) {
-            stmt.bindString(1, name);
+            stmt.bindString(2, name);
         }
  
         String sex = entity.getSex();
         if (sex != null) {
-            stmt.bindString(2, sex);
+            stmt.bindString(3, sex);
         }
  
         String mImagePath = entity.getMImagePath();
         if (mImagePath != null) {
-            stmt.bindString(3, mImagePath);
+            stmt.bindString(4, mImagePath);
         }
  
         String mFaceRect = entity.getMFaceRect();
         if (mFaceRect != null) {
-            stmt.bindString(4, mFaceRect);
+            stmt.bindString(5, mFaceRect);
         }
  
         String mFeature = entity.getMFeature();
         if (mFeature != null) {
-            stmt.bindString(5, mFeature);
+            stmt.bindString(6, mFeature);
         }
     }
 
     @Override
-    public Void readKey(Cursor cursor, int offset) {
-        return null;
+    public Long readKey(Cursor cursor, int offset) {
+        return cursor.getLong(offset + 0);
     }    
 
     @Override
     public FacesData readEntity(Cursor cursor, int offset) {
         FacesData entity = new FacesData( //
-            cursor.isNull(offset + 0) ? null : cursor.getString(offset + 0), // name
-            cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1), // sex
-            cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // mImagePath
-            cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // mFaceRect
-            cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4) // mFeature
+            cursor.getLong(offset + 0), // id
+            cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1), // name
+            cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // sex
+            cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // mImagePath
+            cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // mFaceRect
+            cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5) // mFeature
         );
         return entity;
     }
      
     @Override
     public void readEntity(Cursor cursor, FacesData entity, int offset) {
-        entity.setName(cursor.isNull(offset + 0) ? null : cursor.getString(offset + 0));
-        entity.setSex(cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1));
-        entity.setMImagePath(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
-        entity.setMFaceRect(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
-        entity.setMFeature(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
+        entity.setId(cursor.getLong(offset + 0));
+        entity.setName(cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1));
+        entity.setSex(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
+        entity.setMImagePath(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
+        entity.setMFaceRect(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
+        entity.setMFeature(cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5));
      }
     
     @Override
-    protected final Void updateKeyAfterInsert(FacesData entity, long rowId) {
-        // Unsupported or missing PK type
-        return null;
+    protected final Long updateKeyAfterInsert(FacesData entity, long rowId) {
+        entity.setId(rowId);
+        return rowId;
     }
     
     @Override
-    public Void getKey(FacesData entity) {
-        return null;
+    public Long getKey(FacesData entity) {
+        if(entity != null) {
+            return entity.getId();
+        } else {
+            return null;
+        }
     }
 
     @Override
     public boolean hasKey(FacesData entity) {
-        // TODO
-        return false;
+        throw new UnsupportedOperationException("Unsupported for entities with a non-null key");
     }
 
     @Override

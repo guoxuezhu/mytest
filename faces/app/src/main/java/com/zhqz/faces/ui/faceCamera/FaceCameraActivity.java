@@ -95,6 +95,11 @@ public class FaceCameraActivity extends BaseActivity implements FaceCameraMvpVie
 
     @Override
     public void updataFaceNO(String errorMsg) {
-        Toast.makeText(this, errorMsg, Toast.LENGTH_LONG).show();
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(FaceCameraActivity.this, errorMsg, Toast.LENGTH_LONG).show();
+            }
+        });
     }
 }

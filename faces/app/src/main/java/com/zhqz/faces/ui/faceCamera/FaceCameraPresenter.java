@@ -62,18 +62,34 @@ public class FaceCameraPresenter implements Presenter<FaceCameraMvpView> {
                 try {
                     List<FaceFeature> features = FaceSearchManager.getInstance().getImageFeatures("", null, bitmap);
 
-                    if (features == null && features.size() == 0) {
+                    if (features == null || features.size() == 0) {
                         ELog.i("=====检测人脸失败===没有人脸===");
+                        fcMvpView.updataFaceNO("检测人脸失败，或没有人脸");
                     } else {
                         String filePath = FileSizeUtil.saveBitmap(bitmap);
                         if (filePath != null) {
                             for (int j = 0; j < features.size(); j++) {
-                                facesDataDao.insert(new FacesData(faceUserName, faceUserSex, filePath, features.get(j).mFaceRect, features.get(j).mFeature));
+                                List<FacesData> facesData = facesDataDao.queryBuilder()
+                                        .where(FacesDataDao.Properties.Id.eq(faceUserId))
+                                        .orderAsc(FacesDataDao.Properties.Id)
+                                        .list();
+                                if (facesData.size() == 0) {
+                                    facesDataDao.insert(new FacesData(faceUserId, faceUserName, faceUserSex, filePath,
+                                            features.get(j).mFaceRect, features.get(j).mFeature));
+                                } else {
+                                    FileSizeUtil.deletefile(facesData.get(0).getMImagePath());
+                                    facesData.get(0).setName(faceUserName);
+                                    facesData.get(0).setSex(faceUserSex);
+                                    facesData.get(0).setMImagePath(filePath);
+                                    facesData.get(0).setMFaceRect(features.get(j).mFaceRect);
+                                    facesData.get(0).setMFeature(features.get(j).mFeature);
+                                    facesDataDao.update(facesData.get(0));
 
+                                }
                                 updataFaceDao(faceUserId, features.get(j).mFaceRect, features.get(j).mFeature, filePath);
                             }
-                            ELog.i("=====检测人脸==facesDataDao====" + facesDataDao.loadAll().toString());
-                            ELog.i("=====检测人脸==facesDataDao====" + facesDataDao.loadAll().size());
+                            ELog.i("====人脸===========222============facesDataDao====" + facesDataDao.loadAll().toString());
+                            ELog.i("====人脸============333===========facesDataDao====" + facesDataDao.loadAll().size());
                         }
                     }
                 } catch (Exception e) {

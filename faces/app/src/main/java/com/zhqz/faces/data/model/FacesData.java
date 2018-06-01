@@ -14,6 +14,8 @@ import java.util.Arrays;
 @Entity
 public class FacesData {
 
+    @Id
+    public long id;
 
     public String name;
 
@@ -27,9 +29,10 @@ public class FacesData {
     public String mFeature;
 
 
-    @Generated(hash = 232246953)
-    public FacesData(String name, String sex, String mImagePath, String mFaceRect,
-                     String mFeature) {
+    @Generated(hash = 118088774)
+    public FacesData(long id, String name, String sex, String mImagePath,
+            String mFaceRect, String mFeature) {
+        this.id = id;
         this.name = name;
         this.sex = sex;
         this.mImagePath = mImagePath;
@@ -46,14 +49,14 @@ public class FacesData {
     @Override
     public String toString() {
         return "FacesData{" +
-                "name='" + name + '\'' +
+                "id=" + id +
+                ", name='" + name + '\'' +
                 ", sex='" + sex + '\'' +
                 ", mImagePath='" + mImagePath + '\'' +
                 ", mFaceRect='" + mFaceRect + '\'' +
                 ", mFeature='" + mFeature + '\'' +
                 '}';
     }
-
 
     public String getName() {
         return this.name;
@@ -102,5 +105,15 @@ public class FacesData {
 
     public void setMFeature(String mFeature) {
         this.mFeature = mFeature;
+    }
+
+
+    public long getId() {
+        return this.id;
+    }
+
+
+    public void setId(long id) {
+        this.id = id;
     }
 }
