@@ -131,7 +131,7 @@ public class MainActivity extends BaseActivity implements MainMvpView, SearchRes
 
 
         try {
-            mCamera = Camera.open(0);
+            mCamera = Camera.open(1);
             mCamera.setDisplayOrientation(90);
             preview.setCamera(mCamera);
         } catch (RuntimeException ex) {
@@ -319,7 +319,7 @@ public class MainActivity extends BaseActivity implements MainMvpView, SearchRes
             canvas.drawRect(mResultCache.get(0).getRect(), preview.getFaceRectPaint());
             Matrix matrix = new Matrix();
             matrix.preScale(1, -1);
-            matrix.postRotate(90);
+            matrix.postRotate(-90);
             rotatedRgbBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, false);
             runOnUiThread(new Runnable() {
                 @Override
